@@ -16,14 +16,14 @@ export async function getDrivers(req: Request, res: Response, next: any) {
 export async function postDrivers(req: Request, res: Response, next: any) {
   const { name, cluster } = req.body;
 
-  if (name && cluster) {
-    try {
-      const results = await driversDB.createOne({ name, cluster });
-      res.json(results);
-    } catch (error) {
-      // console.log(error);
-      return next(new ErrorException(ErrorCode.ServerError));
-    }
+  if (!(name && cluster)) return next(new ErrorException(ErrorCode.WrongInput));
+
+  try {
+    const results = await driversDB.createOne({ name, cluster });
+    res.json(results);
+  } catch (error) {
+    // console.log(error);
+    return next(new ErrorException(ErrorCode.ServerError));
   }
 }
 
