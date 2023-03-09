@@ -7,8 +7,6 @@ import request from 'supertest';
 
 import { app } from '../app';
 
-import { connect, disconnect } from '../model/postgres-connect';
-
 const API_VERSION = process.env.API_VERSION;
 
 let signInJwtToken = '';
@@ -36,9 +34,9 @@ describe('Launches API', () => {
     };
     test('It should respond with 201 and return a token', async () => {
       const response = await request(app)
-        .post(`/register`)
-        .send(registerData)
+        .post(`/${API_VERSION}/register`)
         .expect('Content-Type', /json/)
+        .send(registerData)
         .expect(201)
         .expect((res: any) => {
           const token = res.body['token'];
@@ -49,7 +47,7 @@ describe('Launches API', () => {
 
     test('It should respond with 405, Username Already Exists', async () => {
       const response = await request(app)
-        .post(`/register`)
+        .post(`/${API_VERSION}/register`)
         .send(registerData)
         .expect('Content-Type', /json/)
         .expect(405);
@@ -57,7 +55,7 @@ describe('Launches API', () => {
 
     test('It should respond with 401, Wrong Register Token', async () => {
       const response = await request(app)
-        .post(`/register`)
+        .post(`/${API_VERSION}/register`)
         .send(registerDataWrongRegisterToken)
         .expect('Content-Type', /json/)
         .expect(401);
@@ -81,7 +79,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200 and return a token', async () => {
       const response = await request(app)
-        .post(`/sign-in`)
+        .post(`/${API_VERSION}/login`)
         .send(loginData)
         .expect('Content-Type', /json/)
         .expect(200)
@@ -93,14 +91,14 @@ describe('Launches API', () => {
     });
     test('It should respond with 405, User Doesnt Exists', async () => {
       const response = await request(app)
-        .post(`/sign-in`)
+        .post(`/${API_VERSION}/login`)
         .send(loginDataWrongName)
         .expect('Content-Type', /json/)
         .expect(405);
     });
     test('It should respond with 401, Password is wrong', async () => {
       const response = await request(app)
-        .post(`/sign-in`)
+        .post(`/${API_VERSION}/login`)
         .send(loginDataWrongPassword)
         .expect('Content-Type', /json/)
         .expect(401);
@@ -110,7 +108,7 @@ describe('Launches API', () => {
   describe('Test GET /order-status', () => {
     test('It should respond with 200', async () => {
       const response = await request(app)
-        .get(`/order-status`)
+        .get(`/${API_VERSION}/order-status`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -118,7 +116,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200, ?scanned=true', async () => {
       const response = await request(app)
-        .get(`/order-status?scanned=true`)
+        .get(`/${API_VERSION}/order-status?scanned=true`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -126,7 +124,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200, ?scanned=false', async () => {
       const response = await request(app)
-        .get(`/order-status?scanned=false`)
+        .get(`/${API_VERSION}/order-status?scanned=false`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -134,7 +132,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200, /:driver', async () => {
       const response = await request(app)
-        .get(`/order-status/Moe`)
+        .get(`/${API_VERSION}/order-status/Moe`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -142,7 +140,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200, /:driver?scanned=true', async () => {
       const response = await request(app)
-        .get(`/order-status/Moe?scanned=true`)
+        .get(`/${API_VERSION}/order-status/Moe?scanned=true`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -150,7 +148,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200, /:driver?scanned=false', async () => {
       const response = await request(app)
-        .get(`/order-status/Moe?scanned=false`)
+        .get(`/${API_VERSION}/order-status/Moe?scanned=false`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -158,7 +156,7 @@ describe('Launches API', () => {
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .get(`/order-status`)
+        .get(`/${API_VERSION}/order-status`)
         .set('Authorization', `Bearer WrongToken`)
         .expect('Content-Type', /json/)
         .expect(401);
@@ -168,7 +166,7 @@ describe('Launches API', () => {
   describe('Test PUT /scan/:voucher', () => {
     test('It should respond with 204', async () => {
       const response = await request(app)
-        .put(`/scan/A1A`)
+        .get(`/${API_VERSION}/scan/A1A`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .send({})
         .expect(204);
@@ -176,7 +174,7 @@ describe('Launches API', () => {
 
     test('It should respond with 404, Asset not Found', async () => {
       const response = await request(app)
-        .put(`/scan/VOUCHER_DOESNT_EXIST`)
+        .get(`/${API_VERSION}/scan/VOUCHER_DOESNT_EXIST`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .send({})
         .expect(404);
@@ -184,7 +182,7 @@ describe('Launches API', () => {
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .put(`/scan/A1A`)
+        .get(`/${API_VERSION}/scan/A1A`)
         .set('Authorization', `Bearer wrongwrong`)
         .send({})
         .expect(401);
@@ -194,14 +192,14 @@ describe('Launches API', () => {
   describe('Test GET /drivers', () => {
     test('It should respond with 200', async () => {
       const response = await request(app)
-        .get(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(200);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .get(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
     });
@@ -210,14 +208,14 @@ describe('Launches API', () => {
   describe('Test POST /drivers', () => {
     test('It should respond with 201', async () => {
       const response = await request(app)
-        .post(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(201);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .post(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .send({})
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
@@ -227,7 +225,7 @@ describe('Launches API', () => {
   describe('Test PUT /drivers', () => {
     test('It should respond with 200', async () => {
       const response = await request(app)
-        .put(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .send({})
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(200);
@@ -235,7 +233,7 @@ describe('Launches API', () => {
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .put(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .send({})
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
@@ -245,14 +243,14 @@ describe('Launches API', () => {
   describe('Test DELETE /drivers', () => {
     test('It should respond with 204', async () => {
       const response = await request(app)
-        .delete(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(204);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .delete(`/drivers`)
+        .get(`/${API_VERSION}/drivers`)
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
     });
@@ -261,14 +259,14 @@ describe('Launches API', () => {
   describe('Test GET /clusters', () => {
     test('It should respond with 200', async () => {
       const response = await request(app)
-        .get(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(200);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .get(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
     });
@@ -277,14 +275,14 @@ describe('Launches API', () => {
   describe('Test POST /clusters', () => {
     test('It should respond with 201', async () => {
       const response = await request(app)
-        .post(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(201);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .post(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
     });
@@ -293,7 +291,7 @@ describe('Launches API', () => {
   describe('Test PUT /clusters', () => {
     test('It should respond with 200', async () => {
       const response = await request(app)
-        .put(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .send({})
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(200);
@@ -301,7 +299,7 @@ describe('Launches API', () => {
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .put(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .send({})
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
@@ -311,14 +309,14 @@ describe('Launches API', () => {
   describe('Test DELETE /clusters', () => {
     test('It should respond with 204', async () => {
       const response = await request(app)
-        .delete(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(204);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .delete(`/clusters`)
+        .get(`/${API_VERSION}/clusters`)
         .set('Authorization', `Bearer wrongToken..`)
         .expect(401);
     });
@@ -327,7 +325,7 @@ describe('Launches API', () => {
   describe('Test GET /init-database', () => {
     test('It should respond with 204', async () => {
       const response = await request(app)
-        .get(`/init-database`)
+        .get(`/${API_VERSION}/init-database`)
         .send({})
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect(204);

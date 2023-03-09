@@ -1,0 +1,30 @@
+import { User } from '../interface/IUser';
+import { pool } from '../postgres-connect';
+
+export const usersDB: any = {};
+
+// get USERS
+
+usersDB.getUser = async (user: string) => {
+  try {
+    const { rows } = await pool.query(`
+    SELECT * 
+    FROM users 
+    WHERE name = '${user}'`);
+
+    return rows;
+  } catch (error) {
+    console.log('Database Error', error);
+    return;
+  }
+};
+
+// create one user
+usersDB.createOne = async (user: User) => {
+  const { rows } = await pool.query(`
+  INSERT INTO users
+  VALUES ('${user._id}', '${user.name}', '${user.password}')
+  `);
+
+  return rows;
+};
