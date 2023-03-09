@@ -9,6 +9,9 @@ export class ErrorException extends Error {
     this.description = code;
     this.status = 500;
     switch (code) {
+      case ErrorCode.NoNameOrPassword:
+        this.status = 404;
+        break;
       case ErrorCode.BadRequestError:
         this.status = 400;
         break;
@@ -37,6 +40,9 @@ export class ErrorException extends Error {
         this.status = 500;
         break;
       case ErrorCode.WrongRegisterPasswordError:
+        this.status = 401;
+        break;
+      case ErrorCode.WrongInput:
         this.status = 401;
         break;
       default:

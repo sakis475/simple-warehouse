@@ -3,28 +3,31 @@ import { pool } from '../postgres-connect';
 
 export const usersDB: any = {};
 
-// get USERS
-
+// get a user
 usersDB.getUser = async (user: string) => {
   try {
     const { rows } = await pool.query(`
     SELECT * 
     FROM users 
-    WHERE name = '${user}'`);
+    WHERE name = '${user}'
+    `);
 
     return rows;
   } catch (error) {
-    console.log('Database Error', error);
-    return;
+    throw new Error(`'Database Error', ${error}`);
   }
 };
 
 // create one user
 usersDB.createOne = async (user: User) => {
-  const { rows } = await pool.query(`
-  INSERT INTO users
-  VALUES ('${user._id}', '${user.name}', '${user.password}')
-  `);
+  try {
+    const { rows } = await pool.query(`
+    INSERT INTO users
+    VALUES ('${user._id}', '${user.name}', '${user.password}')
+    `);
 
-  return rows;
+    return user;
+  } catch (error) {
+    throw new Error(`'Database Error', ${error}`);
+  }
 };

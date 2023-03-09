@@ -11,15 +11,18 @@ import { usersDB } from '../model/db/users.db';
 export async function postRegister(req: Request, res: Response, next: any) {
   const { name, password, registerToken } = req.body;
 
+  if (!name || !password) {
+    console.log('NoNameOrPassword error');
+    return next(new ErrorException(ErrorCode.NoNameOrPassword));
+  }
+
   if (process.env.REGISTER_AUTH_TOKEN !== registerToken) {
     return next(new ErrorException(ErrorCode.WrongRegisterPasswordError));
   }
 
   const userExists = await usersDB.getUser(name);
 
-  console.log(userExists);
-
-  if (userExists.length) {
+  if (userExists && userExists[0]) {
     return next(new ErrorException(ErrorCode.DuplicateUserError));
   }
 

@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { initializeDatabase } from '../../scripts/initialize-test-database';
+import { initializeDatabase } from '../../scripts/reset_dbs';
 
 import request from 'supertest';
 

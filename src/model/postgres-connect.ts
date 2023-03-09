@@ -1,7 +1,12 @@
 import { Pool, PoolConfig } from 'pg';
 
-export const connect = (dbinfo: PoolConfig) => {
-  return new Pool(dbinfo);
+export const connect = () => {
+  const poolConfig =
+    process.env.NODE_ENV === 'test'
+      ? JSON.parse(process.env.TEST_POSTGRES!)
+      : JSON.parse(process.env.POSTGRES!);
+
+  return new Pool(poolConfig);
 };
 
-export const pool = connect(JSON.parse(process.env.POSTGRES!));
+export const pool = connect();

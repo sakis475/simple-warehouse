@@ -10,6 +10,11 @@ export class ErrorCode {
   public static readonly NoUserFoundError = 'User Name does not exist';
   public static readonly WrongPasswordError = 'Password is not correct';
   public static readonly ServerError = 'Something wrong happened on the server';
+  public static readonly NoNameOrPassword =
+    'You must provide a username and password';
   public static readonly WrongRegisterPasswordError =
     'Register Password is Incorrect please contact administrator to provide you one.';
+  public static readonly BodyNotJSON =
+    'This request requires JSON data inside body.';
+  public static readonly WrongInput = 'You sended wrong input into the body.';
 }
