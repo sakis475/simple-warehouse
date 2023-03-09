@@ -33,14 +33,30 @@ clustersDB.createOne = async (cluster: Cluster) => {
 };
 
 // update a cluster
-clustersDB.updateOne = async (driver: Cluster) => {
+clustersDB.updateOne = async (cluster: Cluster) => {
   try {
     const { rows } = await pool.query(`
       UPDATE clusters
       SET 
-        name = '${driver.name}',
-        postcode = '${driver.postcode}'
-      WHERE name = '${driver.name}'
+        name = '${cluster.name}',
+        postcode = '${cluster.postcode}'
+      WHERE name = '${cluster.name}'
+      `);
+    return rows;
+  } catch (error) {
+    throw new Error(`'Database Error', ${error}`);
+  }
+};
+
+// update one row of cluster
+clustersDB.updateOne = async (cluster: Cluster) => {
+  try {
+    const { rows } = await pool.query(`
+      UPDATE clusters
+      SET 
+        name = '${cluster.name}',
+        postcode = '${cluster.postcode}'
+      WHERE name = '${cluster.name}'
       `);
     return rows;
   } catch (error) {

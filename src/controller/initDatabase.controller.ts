@@ -6,7 +6,7 @@ export async function getInitDatabase(req: Request, res: Response, next: any) {
   // create collection of drivers, clusters, orders
   // if a collection already exist delete it and recreate it
   try {
-    res.status(204).json('database initialized/resetted');
+    res.status(200).json('database resetted');
   } catch (error) {
     return next(new ErrorException(ErrorCode.ServerError));
   }

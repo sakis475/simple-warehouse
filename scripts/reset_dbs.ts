@@ -1,1 +1,1 @@
-export const initializeDatabase = () => {};
+export const resetDatabase = () => {};

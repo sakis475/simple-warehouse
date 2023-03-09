@@ -10,8 +10,6 @@ import {
 export const orderRouter = Router();
 
 orderRouter.get('/', authMiddleware, getOrder);
-orderRouter.get('/:driver', authMiddleware, getOrder);
-
 orderRouter.post('/', authMiddleware, postOrder);
 orderRouter.put('/', authMiddleware, putOrder);
 orderRouter.delete('/', authMiddleware, deleteOrder);

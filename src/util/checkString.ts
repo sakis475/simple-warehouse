@@ -1,4 +1,4 @@
-export async function isJson(str: string): Promise<boolean> {
+export async function isJson(str: string) {
   try {
     await JSON.parse(str);
   } catch (e) {
