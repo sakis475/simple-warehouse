@@ -4,6 +4,7 @@ import { registerRouter } from './without_auth/register.router';
 import { clustersRouter } from './with_auth/clusters.router';
 import { driversRouter } from './with_auth/drivers.router';
 import { orderRouter } from './with_auth/orders.router';
+import { resetDatabaseRouter } from './with_auth/resetDatabase.router';
 import { scanRouter } from './with_auth/scan.router';
 
 export const apiEndpoints = Router();
@@ -15,3 +16,4 @@ apiEndpoints.use('/order', orderRouter);
 apiEndpoints.use('/scan', scanRouter);
 apiEndpoints.use('/drivers', driversRouter);
 apiEndpoints.use('/clusters', clustersRouter);
+apiEndpoints.use('/reset-database', resetDatabaseRouter);

@@ -27,8 +27,7 @@ CREATE TABLE orders (
 voucher VARCHAR(255) PRIMARY KEY,
 postcode_area VARCHAR(255),
 postcode VARCHAR(255) NOT NULL,
-scanned BOOLEAN DEFAULT FALSE,
-FOREIGN KEY (postcode_area) REFERENCES clusters(postcode)
+scanned BOOLEAN DEFAULT FALSE
 );
 
 INSERT INTO orders VALUES
@@ -78,8 +77,7 @@ CREATE TABLE orders (
 voucher VARCHAR(255) PRIMARY KEY,
 postcode_area VARCHAR(255),
 postcode VARCHAR(255) NOT NULL,
-scanned BOOLEAN DEFAULT FALSE,
-FOREIGN KEY (postcode_area) REFERENCES clusters(postcode)
+scanned BOOLEAN DEFAULT FALSE
 );
 
 INSERT INTO orders VALUES

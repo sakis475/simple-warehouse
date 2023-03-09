@@ -6,6 +6,7 @@ import { resetDatabase } from '../../scripts/reset_dbs';
 import request from 'supertest';
 
 import { app } from '../app';
+import { disconnect } from '../model/postgres-connect';
 
 const API_VERSION = process.env.API_VERSION;
 
@@ -13,12 +14,11 @@ let signInJwtToken = '';
 
 describe('Launches API', () => {
   beforeAll(async () => {
-    // await initializeDatabase();
-    // await connect(process.env.TEST_POSTGRES!);
+    await resetDatabase();
   });
 
   afterAll(async () => {
-    // await disconnect();
+    await disconnect();
   });
 
   describe('Test POST /register', () => {
@@ -105,10 +105,10 @@ describe('Launches API', () => {
     });
   });
 
-  describe('Test GET /order-status', () => {
+  describe('Test GET /order', () => {
     test('It should respond with 200', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status`)
+        .get(`/${API_VERSION}/order`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -116,7 +116,7 @@ describe('Launches API', () => {
 
     test('It should respond with 200, ?scanned=true', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status?scanned=true`)
+        .get(`/${API_VERSION}/order?scanned=true`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -124,31 +124,31 @@ describe('Launches API', () => {
 
     test('It should respond with 200, ?scanned=false', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status?scanned=false`)
+        .get(`/${API_VERSION}/order?scanned=false`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
     });
 
-    test('It should respond with 200, /:driver', async () => {
+    test('It should respond with 200, ?driver=Moe', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status/Moe`)
+        .get(`/${API_VERSION}/order?driver=Moe`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
     });
 
-    test('It should respond with 200, /:driver?scanned=true', async () => {
+    test('It should respond with 200, ?driver=Moe&scanned=true', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status/Moe?scanned=true`)
+        .get(`/${API_VERSION}/order?driver=Moe&scanned=true`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
     });
 
-    test('It should respond with 200, /:driver?scanned=false', async () => {
+    test('It should respond with 200, ?driver=Moe&scanned=false', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status/Moe?scanned=false`)
+        .get(`/${API_VERSION}/order?driver=Moe&scanned=false`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -156,25 +156,25 @@ describe('Launches API', () => {
 
     test('It should respond with 401, Wrong JWT token', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/order-status`)
+        .get(`/${API_VERSION}/order`)
         .set('Authorization', `Bearer WrongToken`)
         .expect('Content-Type', /json/)
         .expect(401);
     });
   });
 
-  describe('Test PUT /scan/:voucher', () => {
+  describe('Test PUT /scan/?voucher', () => {
     test('It should respond with 204', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/scan/A1A`)
+        .put(`/${API_VERSION}/scan?voucher=`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
-        .send({})
+        .send({ voucher: 'A1A', scanned: true })
         .expect(204);
     });
 
     test('It should respond with 404, Asset not Found', async () => {
       const response = await request(app)
-        .get(`/${API_VERSION}/scan/VOUCHER_DOESNT_EXIST`)
+        .get(`/${API_VERSION}/scan?voucher=`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .send({})
         .expect(404);

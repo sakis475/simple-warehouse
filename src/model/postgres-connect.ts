@@ -10,3 +10,7 @@ export const connect = () => {
 };
 
 export const pool = connect();
+
+export const disconnect = async () => {
+  await pool.end();
+};
