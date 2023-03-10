@@ -5,10 +5,9 @@
 1. Clone this repository and cd in it.
 2. `docker-compose up -d //Needs docker for this installed and running`
 3. `npm i`
-4. `npm run initDB //Initialize the database preexisting data`
-5. `npm run test //Test the api`
-6. `npm run start`
-7. Then open localhost:3013 in any browser
+4. `npm run test //Test the api`
+5. `npm run start:prod`
+6. Then open localhost:3013 in any browser
 
 ## API Endpoints
 
