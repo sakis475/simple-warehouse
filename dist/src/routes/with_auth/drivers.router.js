@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.driversRouter = void 0;
+const express_1 = require("express");
+const auth_middleware_1 = require("../../auth/auth-middleware");
+const drivers_controller_1 = require("../../controller/drivers.controller");
+exports.driversRouter = (0, express_1.Router)();
+exports.driversRouter.get('/', auth_middleware_1.authMiddleware, drivers_controller_1.getDrivers);
+exports.driversRouter.post('/', auth_middleware_1.authMiddleware, drivers_controller_1.postDrivers);
+exports.driversRouter.put('/', auth_middleware_1.authMiddleware, drivers_controller_1.putDrivers);
+exports.driversRouter.delete('/', auth_middleware_1.authMiddleware, drivers_controller_1.deleteDrivers);
