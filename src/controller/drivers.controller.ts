@@ -20,7 +20,7 @@ export async function postDrivers(req: Request, res: Response, next: any) {
 
   try {
     const results = await driversDB.createOne({ name, cluster });
-    res.json(results);
+    res.status(201).json(results);
   } catch (error) {
     // console.log(error);
     return next(new ErrorException(ErrorCode.ServerError));
@@ -28,20 +28,21 @@ export async function postDrivers(req: Request, res: Response, next: any) {
 }
 
 export async function putDrivers(req: Request, res: Response, next: any) {
-  const { name, cluster } = req.body;
+  const { name, newName, cluster } = req.body;
 
-  if (!(name && cluster)) return next(new ErrorException(ErrorCode.WrongInput));
+  if (!(name && cluster && newName))
+    return next(new ErrorException(ErrorCode.WrongInput));
 
   try {
-    const results = await driversDB.updateOne({ name, cluster });
-    res.json(results);
+    const results = await driversDB.updateOne({ name, newName, cluster });
+    res.status(201).json(results);
   } catch (error) {
     console.log(error);
     return next(new ErrorException(ErrorCode.ServerError));
   }
 }
 export async function deleteDrivers(req: Request, res: Response, next: any) {
-  const { name } = req.body;
+  const { name } = req.query;
 
   if (!name) return next(new ErrorException(ErrorCode.WrongInput));
 

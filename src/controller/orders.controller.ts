@@ -50,7 +50,7 @@ export async function postOrder(req: Request, res: Response, next: any) {
 
   try {
     const results = await ordersDB.createOne({ voucher, postcode });
-    res.json(results);
+    res.status(201).json(results);
   } catch (error: any) {
     console.log(error);
     return next(new ErrorException(ErrorCode.ServerError));
@@ -64,14 +64,14 @@ export async function putOrder(req: Request, res: Response, next: any) {
 
   try {
     const results = await ordersDB.updateOne({ voucher, postcode, scanned });
-    res.json(results);
+    res.status(201).json(results);
   } catch (error: any) {
     console.log(error);
     return next(new ErrorException(ErrorCode.ServerError));
   }
 }
 export async function deleteOrder(req: Request, res: Response, next: any) {
-  const { voucher } = req.body;
+  const { voucher } = req.query;
 
   if (!voucher) return next(new ErrorException(ErrorCode.WrongInput));
 

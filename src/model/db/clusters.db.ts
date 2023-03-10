@@ -33,12 +33,12 @@ clustersDB.createOne = async (cluster: Cluster) => {
 };
 
 // update a cluster
-clustersDB.updateOne = async (cluster: Cluster) => {
+clustersDB.updateOne = async (cluster: any) => {
   try {
     const { rows } = await pool.query(`
       UPDATE clusters
       SET 
-        name = '${cluster.name}',
+        name = '${cluster.newName}',
         postcode = '${cluster.postcode}'
       WHERE name = '${cluster.name}'
       `);
@@ -48,23 +48,7 @@ clustersDB.updateOne = async (cluster: Cluster) => {
   }
 };
 
-// update one row of cluster
-clustersDB.updateOne = async (cluster: Cluster) => {
-  try {
-    const { rows } = await pool.query(`
-      UPDATE clusters
-      SET 
-        name = '${cluster.name}',
-        postcode = '${cluster.postcode}'
-      WHERE name = '${cluster.name}'
-      `);
-    return rows;
-  } catch (error) {
-    throw new Error(`'Database Error', ${error}`);
-  }
-};
-
-//delete a cluster
+// delete a cluster
 clustersDB.deleteOne = async (clusterName: string) => {
   try {
     const { rows } = await pool.query(`

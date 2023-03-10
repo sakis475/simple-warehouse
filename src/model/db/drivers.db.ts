@@ -33,12 +33,12 @@ driversDB.createOne = async (driver: Driver) => {
 };
 
 // update a driver
-driversDB.updateOne = async (driver: Driver) => {
+driversDB.updateOne = async (driver: any) => {
   try {
     const { rows } = await pool.query(`
       UPDATE drivers
       SET 
-        name = '${driver.name}',
+        name = '${driver.newName}',
         cluster = '${driver.cluster}'
       WHERE name = '${driver.name}'
       `);

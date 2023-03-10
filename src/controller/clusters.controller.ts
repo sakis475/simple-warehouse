@@ -21,7 +21,7 @@ export async function postClusters(req: Request, res: Response, next: any) {
 
   try {
     const results = await clustersDB.createOne({ name, postcode });
-    res.json(results);
+    res.status(201).json(results);
   } catch (error) {
     // console.log(error);
     return next(new ErrorException(ErrorCode.ServerError));
@@ -29,21 +29,21 @@ export async function postClusters(req: Request, res: Response, next: any) {
 }
 
 export async function putClusters(req: Request, res: Response, next: any) {
-  const { name, postcode } = req.body;
+  const { name, newName, postcode } = req.body;
 
-  if (!(name && postcode))
+  if (!(name && postcode && newName))
     return next(new ErrorException(ErrorCode.WrongInput));
 
   try {
-    const results = await clustersDB.updateOne({ name, postcode });
-    res.json(results);
+    const results = await clustersDB.updateOne({ name, newName, postcode });
+    res.status(201).json(results);
   } catch (error) {
     console.log(error);
     return next(new ErrorException(ErrorCode.ServerError));
   }
 }
 export async function deleteClusters(req: Request, res: Response, next: any) {
-  const { name } = req.body;
+  const { name } = req.query;
 
   if (!name) return next(new ErrorException(ErrorCode.WrongInput));
 

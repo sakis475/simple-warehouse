@@ -4,7 +4,7 @@ import { ErrorCode } from '../error_handler/error-code';
 import { ErrorException } from '../error_handler/error-exception';
 
 export async function putScan(req: Request, res: Response, next: any) {
-  const { voucher } = req.params;
+  const { voucher } = req.body;
 
   if (!voucher) return next(new ErrorException(ErrorCode.WrongInput));
 

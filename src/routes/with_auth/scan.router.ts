@@ -4,4 +4,4 @@ import { authMiddleware } from '../../auth/auth-middleware';
 
 export const scanRouter = Router();
 
-scanRouter.put('/:voucher', authMiddleware, putScan);
+scanRouter.put('/', authMiddleware, putScan);
