@@ -172,12 +172,12 @@ describe('Launches API', () => {
         .expect(200);
     });
 
-    test('It should respond with 401, Wrong Body Input', async () => {
+    test('It should respond with 404, Wrong Body Input', async () => {
       const response = await request(app)
         .put(`/${API_VERSION}/scan`)
         .set('Authorization', `Bearer ${signInJwtToken}`)
         .send({})
-        .expect(401);
+        .expect(404);
     });
 
     test('It should respond with 401, Wrong JWT token', async () => {

@@ -28,11 +28,12 @@ ordersDB.getOrders = async (parametersQuery: any) => {
     const { rows } = await pool.query(`
     SELECT orders.voucher, orders.postcode_area, drivers.cluster, orders.postcode, drivers.name as driver, orders.scanned
     FROM orders
-    INNER JOIN clusters
+    LEFT JOIN clusters
     ON postcode_area = clusters.postcode
-    INNER JOIN drivers
+    LEFT JOIN drivers
     ON clusters.name = drivers.cluster
     ${parametersQuery ? whereSQLStringBuild : ''}
+    ORDER BY orders.voucher ASC
     `);
 
     return rows;

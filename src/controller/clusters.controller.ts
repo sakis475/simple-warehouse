@@ -19,6 +19,9 @@ export async function postClusters(req: Request, res: Response, next: any) {
   if (!(name && postcode))
     return next(new ErrorException(ErrorCode.WrongInput));
 
+  if (!(/^[A-Za-z][A-Za-z0-9_]{0,29}$/.test(name) && /\d{2}/.test(postcode)))
+    return next(new ErrorException(ErrorCode.WrongInput));
+
   try {
     const results = await clustersDB.createOne({ name, postcode });
     res.status(201).json(results);
@@ -31,7 +34,18 @@ export async function postClusters(req: Request, res: Response, next: any) {
 export async function putClusters(req: Request, res: Response, next: any) {
   const { name, newName, postcode } = req.body;
 
-  if (!(name && postcode && newName))
+  if (!name || !postcode || !newName)
+    return next(new ErrorException(ErrorCode.WrongInput));
+
+  const regexCheckName = /^[A-Za-z][A-Za-z0-9_]{0,29}$/;
+
+  if (
+    !(
+      regexCheckName.test(name) &&
+      regexCheckName.test(newName) &&
+      /\d{2}/.test(postcode)
+    )
+  )
     return next(new ErrorException(ErrorCode.WrongInput));
 
   try {

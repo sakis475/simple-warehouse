@@ -10,10 +10,12 @@ export async function getOrder(req: Request, res: Response, next: any) {
 
   //put in the table's column value that you want to query in the form
   //[table, column, value]
-  //use in case you want to search like WHERE X.a =
   const parametersQuery = [];
 
   if (scannedExists) {
+    if (!/^(true|false)$/i.test(String(scannedExists)))
+      return next(new ErrorException(ErrorCode.WrongInput));
+
     if (req.query.scanned === 'true') {
       parametersQuery.push({ table: 'orders', column: 'scanned', value: true });
     } else if (req.query.scanned === 'false') {
@@ -26,6 +28,10 @@ export async function getOrder(req: Request, res: Response, next: any) {
   }
 
   if (driverExists && driverExists.length) {
+    const regexCheckName = /^[A-Za-z][A-Za-z0-9_]{1,29}$/;
+    if (!regexCheckName.test(String(driverExists)))
+      return next(new ErrorException(ErrorCode.WrongInput));
+
     parametersQuery.push({
       table: 'drivers',
       column: 'name',
@@ -48,6 +54,11 @@ export async function postOrder(req: Request, res: Response, next: any) {
   if (!voucher || !postcode)
     return next(new ErrorException(ErrorCode.WrongInput));
 
+  const regexCheckVoucher = /[A-Za-z][0-9][A-Za-z]/;
+
+  if (!(regexCheckVoucher.test(voucher) && /\d{5}/.test(postcode)))
+    return next(new ErrorException(ErrorCode.WrongInput));
+
   try {
     const results = await ordersDB.createOne({ voucher, postcode });
     res.status(201).json(results);
@@ -62,6 +73,17 @@ export async function putOrder(req: Request, res: Response, next: any) {
   if (!voucher || !postcode || !scanned)
     return next(new ErrorException(ErrorCode.WrongInput));
 
+  const regexCheckVoucher = /[A-Za-z][0-9][A-Za-z]/;
+
+  if (
+    !(
+      regexCheckVoucher.test(voucher) &&
+      /\d{5}/.test(postcode) &&
+      /^(true|false)$/i.test(scanned)
+    )
+  )
+    return next(new ErrorException(ErrorCode.WrongInput));
+
   try {
     const results = await ordersDB.updateOne({ voucher, postcode, scanned });
     res.status(201).json(results);
@@ -74,6 +96,11 @@ export async function deleteOrder(req: Request, res: Response, next: any) {
   const { voucher } = req.query;
 
   if (!voucher) return next(new ErrorException(ErrorCode.WrongInput));
+
+  const regexCheckName = /^[A-Za-z][A-Za-z0-9_]{1,29}$/;
+
+  if (!regexCheckName.test(String(voucher)))
+    return next(new ErrorException(ErrorCode.WrongInput));
 
   try {
     const results = await ordersDB.deleteOne(voucher);

@@ -43,7 +43,7 @@ export class ErrorException extends Error {
         this.status = 401;
         break;
       case ErrorCode.WrongInput:
-        this.status = 401;
+        this.status = 404;
         break;
       default:
         this.status = 500;
