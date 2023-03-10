@@ -13,6 +13,8 @@ export async function putScan(req: Request, res: Response, next: any) {
     const results = await ordersDB.updateScanned({ voucher, scanned: true });
     res.json(results);
   } catch (error) {
+    if ((error = 'This voucher wasnt found'))
+      return next(new ErrorException(ErrorCode.NotFound));
     return next(new ErrorException(ErrorCode.ServerError));
   }
 }

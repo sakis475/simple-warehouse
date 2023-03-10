@@ -1,0 +1,42 @@
+<div class="form-container">
+  <div style="text-align: center">
+    <img
+      src="../assets/skroutz-mile-logo.svg"
+      alt="skroutz-mile-logo"
+      style="width: 60%"
+    />
+  </div>
+
+  <h2>Login/Register</h2>
+  <label for="uname"><b>Username</b></label>
+  <input
+    [(ngModel)]="username"
+    type="text"
+    placeholder="Enter Username"
+    name="uname"
+    required
+  />
+
+  <label for="psw"><b>Password</b></label>
+  <input
+    [(ngModel)]="password"
+    type="password"
+    placeholder="Enter Password"
+    name="psw"
+    required
+  />
+
+  <div>
+    <button (click)="login()" class="loginButton">Login</button
+    ><button (click)="register()" class="registerButton">Register</button>
+  </div>
+  <div class="registerCodeInput">
+    <input
+      [(ngModel)]="registerPass"
+      type="text"
+      placeholder="Enter Register Code"
+      name="uname"
+      required
+    />
+  </div>
+</div>

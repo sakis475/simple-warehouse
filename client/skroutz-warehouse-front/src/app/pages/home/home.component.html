@@ -1,0 +1,10 @@
+<div style="text-align: right">
+  <button (click)="logout()">logout</button>
+  <button (click)="reset()">init/reset_db</button>
+</div>
+
+<app-order-table></app-order-table>
+
+<ng-container *ngFor="let name of driverNames">
+  <app-driver-table [driverName]="name"></app-driver-table>
+</ng-container>

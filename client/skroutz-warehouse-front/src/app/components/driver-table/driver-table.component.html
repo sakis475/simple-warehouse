@@ -1,0 +1,48 @@
+<div style="background-color: rgba(17, 146, 146, 0.378); width: 50%">
+  <h1>Driver {{ driverName }}</h1>
+  <table>
+    <tr>
+      <th style="vertical-align: top">
+        <p>SCANNED</p>
+
+        <table class="orders">
+          <tr>
+            <th>Voucher</th>
+            <th>Postcode</th>
+            <th>clusterName</th>
+          </tr>
+
+          <tr *ngFor="let row of tableDataScanned">
+            <th [ngClass]="row.scanned ? 'scanned' : ''">
+              {{ row.voucher }}
+            </th>
+            <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.postcode }}</th>
+            <th [ngClass]="row.scanned ? 'scanned' : ''">
+              {{ row.clusterName }}
+            </th>
+          </tr>
+        </table>
+      </th>
+      <th style="vertical-align: top">
+        <p>UNSCANNED</p>
+        <table class="orders">
+          <tr>
+            <th>Voucher</th>
+            <th>Postcode</th>
+            <th>clusterName</th>
+          </tr>
+
+          <tr *ngFor="let row of tableDataUnScanned">
+            <th [ngClass]="row.scanned ? 'scanned' : ''">
+              {{ row.voucher }}
+            </th>
+            <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.postcode }}</th>
+            <th [ngClass]="row.scanned ? 'scanned' : ''">
+              {{ row.clusterName }}
+            </th>
+          </tr>
+        </table>
+      </th>
+    </tr>
+  </table>
+</div>

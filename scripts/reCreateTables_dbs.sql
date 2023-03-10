@@ -1,7 +1,7 @@
 DROP TABLE orders;
 DROP TABLE drivers;
 DROP TABLE clusters;
-DROP TABLE users;
+-- DROP TABLE users;
 
 CREATE TABLE clusters (
 name VARCHAR(255) PRIMARY KEY,
@@ -42,8 +42,8 @@ INSERT INTO orders VALUES
 ('I9I', '16', '16800'),
 ('J0J', '16', '16801');
 
-CREATE TABLE users (
-_id VARCHAR(255) PRIMARY KEY,
-name VARCHAR(255) NOT NULL UNIQUE,
-password VARCHAR(255) NOT NULL
-);
+-- CREATE TABLE users (
+-- _id VARCHAR(255) PRIMARY KEY,
+-- name VARCHAR(255) NOT NULL UNIQUE,
+-- password VARCHAR(255) NOT NULL
+-- );

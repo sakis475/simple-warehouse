@@ -79,12 +79,14 @@ ordersDB.updateOne = async (order: Order) => {
 // update scanned column of orders (means that the package is ready)
 ordersDB.updateScanned = async (order: Order) => {
   try {
-    const { rows } = await pool.query(`
+    const { rows, rowCount } = await pool.query(`
       UPDATE orders
       SET
         scanned = '${order.scanned}'
       WHERE voucher = '${order.voucher}'
       `);
+
+    if (rowCount === 0) throw new Error(`This voucher wasnt found`);
     return rows;
   } catch (error) {
     throw new Error(`'Database Error', ${error}`);

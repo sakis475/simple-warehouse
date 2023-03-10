@@ -1,0 +1,70 @@
+<h1>All Packages</h1>
+
+<table id="orders">
+  <tr>
+    <th>Voucher</th>
+    <th>Postcode</th>
+    <th>Scanned</th>
+    <th>postcodeArea</th>
+    <th>clusterName</th>
+    <th>driverName</th>
+  </tr>
+
+  <tr *ngFor="let row of tableData">
+    <th [ngClass]="row.scanned ? 'scanned' : ''">
+      {{ row.voucher }}
+    </th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.postcode }}</th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.scanned }}</th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.postcode_area }}</th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.cluster }}</th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">{{ row.driver }}</th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">
+      <button (click)="scan(row.voucher)">scan</button>
+    </th>
+    <th [ngClass]="row.scanned ? 'scanned' : ''">
+      <button (click)="deleteRow(row.voucher)">delete</button>
+    </th>
+  </tr>
+</table>
+
+<tr>
+  <th>
+    <input [(ngModel)]="newRow.voucher" type="text" placeholder="Voucher" />
+  </th>
+  <th>
+    <input [(ngModel)]="newRow.postcode" type="text" placeholder="Postcode" />
+  </th>
+
+  <th>
+    <button (click)="addRow()">Add</button>
+  </th>
+</tr>
+
+<tr>
+  <th>
+    <input [(ngModel)]="updateRow.voucher" type="text" placeholder="Voucher" />
+  </th>
+  <th>
+    <input
+      [(ngModel)]="updateRow.postcode"
+      type="text"
+      placeholder="Postcode"
+    />
+  </th>
+  <th>
+    <input [(ngModel)]="updateRow.scanned" type="text" placeholder="Scanned" />
+  </th>
+
+  <th>
+    <button (click)="updateRowClick()">Update</button>
+  </th>
+</tr>
+
+<label for="psw"><b>Voucher Scan </b></label>
+<input
+  [(ngModel)]="voucherToScan"
+  (keyup.enter)="voucherScan()"
+  type="text"
+  placeholder="Enter Voucher To Scan"
+/>

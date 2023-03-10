@@ -1,5 +1,3 @@
 dist
 node_modules
 *.txt
-front_build
-client
